@@ -1,39 +1,92 @@
-import type { VociType } from "@/models/voci"
-import { createContext, ReactNode, useContext, useState } from "react"
+import type { VociProps } from "@/types/voci"
+import { deleteImageFromAppDirectory } from "@/utils/image-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import {
+    ReactNode,
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+} from "react"
 
 type VociContextType = {
-    vociList: VociType[]
-    addVoci: (voci: VociType) => void
-    updateVoci: (term: VociType["term"], updatedVoci: VociType) => void
-    removeVoci: (term: VociType["term"]) => void
+    isLoading: boolean
+    vociList: VociProps[]
+    addVoci: (voci: VociProps) => void
+    updateVoci: (term: VociProps["term"], updatedVoci: VociProps) => void
+    removeVoci: (term: VociProps["term"]) => void
 }
 
 const VociContext = createContext<VociContextType | undefined>(undefined)
 
 function VociProvider({ children }: { children: ReactNode }) {
-    const [vociList, setVociList] = useState<VociType[]>([
+    const [isLoading, setIsLoading] = useState(true)
+    const [vociList, setVociList] = useState<VociProps[]>([
         { term: "Apple", translation: "Apfel" },
         { term: "Banana", translation: "Banane" },
         { term: "Cherry", translation: "Kirsche" },
     ])
 
-    function addVoci(newVoci: VociType) {
+    function addVoci(newVoci: VociProps) {
         setVociList((prev) => [...prev, newVoci])
     }
 
-    function updateVoci(term: VociType["term"], updatedVoci: VociType) {
+    function updateVoci(term: VociProps["term"], updatedVoci: VociProps) {
         setVociList((prev) =>
-            prev.map((voci) => (voci.term === term ? updatedVoci : voci))
+            prev.map((voci) => {
+                if (voci.term !== term) return voci
+                if (voci.imageUri && voci.imageUri !== updatedVoci.imageUri) {
+                    deleteImageFromAppDirectory(voci.imageUri)
+                }
+                return updatedVoci
+            })
         )
     }
 
-    function removeVoci(term: VociType["term"]) {
-        setVociList((prev) => prev.filter((voci) => voci.term !== term))
+    function removeVoci(term: VociProps["term"]) {
+        setVociList((prev) => {
+            const voci = prev.find((v) => v.term === term)
+            deleteImageFromAppDirectory(voci?.imageUri)
+            return prev.filter((v) => v.term !== term)
+        })
     }
+
+    useEffect(() => {
+        async function loadVocis() {
+            try {
+                // await new Promise((resolve) => setTimeout(resolve, 1000))
+
+                const vocis: VociProps[] = JSON.parse(
+                    (await AsyncStorage.getItem("vocis")) ?? "[]"
+                )
+                console.info("Erfolgreich geladen!")
+                setVociList(vocis)
+            } catch (error) {
+                console.error(`Fehler beim laden: ${error}`)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        loadVocis()
+    }, [])
+
+    useEffect(() => {
+        async function saveVocis() {
+            try {
+                await AsyncStorage.setItem("vocis", JSON.stringify(vociList))
+                console.info("Erfolgreich gespeichert!")
+            } catch (error) {
+                console.error(`Fehler beim speichern: ${error}`)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        saveVocis()
+    }, [vociList])
 
     return (
         <VociContext.Provider
-            value={{ vociList, addVoci, updateVoci, removeVoci }}
+            value={{ isLoading, vociList, addVoci, updateVoci, removeVoci }}
         >
             {children}
         </VociContext.Provider>
@@ -49,4 +102,4 @@ function useVoci() {
     return context
 }
 
-export { useVoci, VociProvider }
+export { VociProvider, useVoci }

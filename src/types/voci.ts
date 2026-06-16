@@ -1,4 +1,4 @@
-export type VociType = {
+export type VociProps = {
     term: string
     translation: string
     imageUri?: string

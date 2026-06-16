@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
+        maxWidth: 240,
     },
     floatingButton: {
         position: "absolute",

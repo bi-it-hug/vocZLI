@@ -1,22 +1,22 @@
-import { styles } from "@/app/styles"
 import { VociDetail } from "@/components/voci-detail"
 import { useVoci } from "@/context/voci-context"
-import { VociType } from "@/models/voci"
+import { styles } from "@/theme/styles"
+import { VociProps } from "@/types/voci"
 import { useRouter } from "expo-router"
-import { View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function AddVoci() {
     const router = useRouter()
     const { addVoci } = useVoci()
 
-    function handleAdd(newVoci: VociType) {
+    function handleAdd(newVoci: VociProps) {
         addVoci(newVoci)
         router.back()
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <VociDetail onSave={handleAdd} />
-        </View>
+        </SafeAreaView>
     )
 }

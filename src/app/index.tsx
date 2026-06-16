@@ -1,17 +1,21 @@
-import { styles } from "@/app/styles"
 import { VociItem } from "@/components/voci-item"
 import { useVoci } from "@/context/voci-context"
+import { colors } from "@/theme/colors"
+import { styles } from "@/theme/styles"
 import { useRouter } from "expo-router"
 import { GraduationCap } from "lucide-react-native"
-import { FlatList, Pressable, View } from "react-native"
+import { ActivityIndicator, FlatList, Pressable } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Index() {
     const router = useRouter()
-    const { vociList } = useVoci()
+    const { vociList, isLoading } = useVoci()
 
     return (
-        <>
-            <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            {isLoading ? (
+                <ActivityIndicator color={colors.neutral[500]} />
+            ) : (
                 <FlatList
                     data={vociList}
                     keyExtractor={(item) => item.term}
@@ -28,7 +32,7 @@ export default function Index() {
                         />
                     )}
                 />
-            </View>
+            )}
             <Pressable
                 style={({ pressed }) => [
                     styles.floatingButton,
@@ -39,6 +43,6 @@ export default function Index() {
             >
                 <GraduationCap size={16} />
             </Pressable>
-        </>
+        </SafeAreaView>
     )
 }

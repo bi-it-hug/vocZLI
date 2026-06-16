@@ -1,9 +1,9 @@
-import { styles } from "@/app/styles"
 import { VociDetail } from "@/components/voci-detail"
 import { useVoci } from "@/context/voci-context"
-import { VociType } from "@/models/voci"
+import { styles } from "@/theme/styles"
+import { VociProps } from "@/types/voci"
 import { useLocalSearchParams, useRouter } from "expo-router"
-import { View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function EditVoci() {
     const router = useRouter()
@@ -16,7 +16,7 @@ export default function EditVoci() {
 
     const originalTerm = voci.term
 
-    function handleSave(updatedVoci: VociType) {
+    function handleSave(updatedVoci: VociProps) {
         updateVoci(originalTerm, updatedVoci)
         router.back()
     }
@@ -27,13 +27,13 @@ export default function EditVoci() {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <VociDetail
                 voci={voci}
                 onSave={handleSave}
                 onCancel={() => router.back()}
                 onDelete={handleDelete}
             />
-        </View>
+        </SafeAreaView>
     )
 }

@@ -12,8 +12,8 @@
             "@/components/*": [
                 "./src/components/*"
             ],
-            "@/models/*": [
-                "./src/models/*"
+            "@/types/*": [
+                "./src/types/*"
             ],
             "@/context/*": [
                 "./src/context/*"
