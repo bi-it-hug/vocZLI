@@ -52,7 +52,7 @@ export function VociDetail({
     }
 
     return (
-        <View style={{ gap: 6, width: "auto" }}>
+        <View style={styles.stack}>
             <ImagePickerButton
                 imageUri={imageUri}
                 onImageSelected={setImageUri}
@@ -72,21 +72,21 @@ export function VociDetail({
                 placeholderTextColor={colors.neutral[400]}
             />
             <Pressable
-                style={[styles.input, { alignItems: "center" }]}
+                style={[styles.button, styles.buttonCenter]}
                 onPress={handleSave}
             >
                 <Text style={typography.body}>Speichern</Text>
             </Pressable>
             {isEdit && (
-                <View style={{ gap: 6 }}>
+                <View style={styles.stack}>
                     <Pressable
-                        style={[styles.input, { alignItems: "center" }]}
+                        style={[styles.button, styles.buttonCenter]}
                         onPress={handleCancel}
                     >
                         <Text style={typography.body}>Abbrechen</Text>
                     </Pressable>
                     <Pressable
-                        style={[styles.input, { alignItems: "center" }]}
+                        style={[styles.button, styles.buttonCenter]}
                         onPress={handleDelete}
                     >
                         <Text style={typography.body}>Löschen</Text>

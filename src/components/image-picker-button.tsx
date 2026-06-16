@@ -1,10 +1,9 @@
-import { colors } from "@/theme/colors"
+import { styles } from "@/theme/styles"
+import { typography } from "@/theme/typography"
 import { ImagePickerButtonProps } from "@/types/image-picker-button"
 import { copyImageToAppDirectory } from "@/utils/image-storage"
 import * as ImagePicker from "expo-image-picker"
-import { Alert, Image, StyleSheet, Text, TouchableOpacity } from "react-native"
-
-const IMAGE_SIZE = 240
+import { Alert, Image, Text, TouchableOpacity } from "react-native"
 
 export function ImagePickerButton({
     imageUri,
@@ -69,37 +68,17 @@ export function ImagePickerButton({
 
     return (
         <TouchableOpacity
-            style={styles.container}
+            style={styles.imagePicker}
             onPress={showPickerOptions}
             activeOpacity={0.7}
         >
             {imageUri ? (
-                <Image source={{ uri: imageUri }} style={styles.image} />
+                <Image source={{ uri: imageUri }} style={styles.imagePickerImage} />
             ) : (
-                <Text style={styles.placeholderText}>Bild hinzufügen</Text>
+                <Text style={[typography.small, typography.muted]}>
+                    Bild hinzufügen
+                </Text>
             )}
         </TouchableOpacity>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: IMAGE_SIZE,
-        height: IMAGE_SIZE,
-        borderRadius: 12,
-        backgroundColor: colors.neutral[200],
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
-    },
-    image: {
-        width: IMAGE_SIZE,
-        height: IMAGE_SIZE,
-    },
-    placeholderText: {
-        color: colors.neutral[500],
-        fontSize: 14,
-        textAlign: "center",
-        paddingHorizontal: 8,
-    },
-})

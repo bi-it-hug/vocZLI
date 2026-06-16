@@ -1,5 +1,6 @@
 import { VociProvider } from "@/context/voci-context"
 import { colors } from "@/theme/colors"
+import { fonts } from "@/theme/fonts"
 import { styles } from "@/theme/styles"
 import {
     Geist_100Thin,
@@ -46,12 +47,12 @@ export default function RootLayout() {
                             backgroundColor: colors.neutral[100],
                         },
                         headerTitleStyle: {
-                            fontFamily: "Geist_500Medium",
+                            fontFamily: fonts.medium,
                         },
                         headerRight: () => (
                             <Pressable
                                 style={({ pressed }) => [
-                                    { marginRight: 16, marginTop: 16 },
+                                    styles.headerButton,
                                     styles.button,
                                     pressed && styles.buttonPressed,
                                 ]}

@@ -1,16 +1,31 @@
+import { colors } from "@/theme/colors"
+import { fonts } from "@/theme/fonts"
 import { StyleSheet } from "react-native"
 
 export const typography = StyleSheet.create({
     heading: {
-        fontFamily: "Geist_500Medium",
+        fontFamily: fonts.medium,
         fontSize: 18,
     },
     body: {
-        fontFamily: "Geist_400Regular",
+        fontFamily: fonts.regular,
         fontSize: 16,
     },
     small: {
-        fontFamily: "Geist_400Regular",
+        fontFamily: fonts.regular,
         fontSize: 14,
+    },
+    display: {
+        fontFamily: fonts.regular,
+        fontSize: 28,
+        textAlign: "center",
+        padding: 10,
+    },
+    muted: {
+        color: colors.neutral[400],
+    },
+    italicMuted: {
+        color: colors.neutral[400],
+        fontStyle: "italic",
     },
 })
